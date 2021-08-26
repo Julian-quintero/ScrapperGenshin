@@ -8,7 +8,7 @@ const urls = [
   "https://www.vg247.com/genshin-impact-codes",
 ];
 
-module.exports = async (req, res) => {
+(async ()  => {
   try {
     const browser = await chromium.puppeteer.launch({
       args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
           (x) => x.textContent
         )
       );
-
+      await page.setContent('<h1>Hello World!</h1>', { waitUntil: 'networkidle2' });
       await browser.close();
 
       console.log(elementsHendles);
@@ -37,11 +37,6 @@ module.exports = async (req, res) => {
     console.log("error ", error);
   }
 
-  res.writeHead(200, {
-    "Content-Type": "text",
-    "Content-Length": 5,
-  })
-  res.end('hola')
-};
+})()
 
 
