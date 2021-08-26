@@ -23,9 +23,8 @@ const fun = async () => {
         installPath: `${tmp}/.local-chromium`})
 
     const browser = await puppeteer.launch({
-        executablePath: exec,
-        headless: true,
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        executablePath: exec
+
     });
 
     let page = await browser.newPage();
