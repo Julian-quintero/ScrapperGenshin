@@ -7,9 +7,7 @@ const download = require('download-chromium');
 const os = require('os');
 const tmp = os.tmpdir();
 
-const exec = await download({
-    revision: 694644,
-    installPath: `${tmp}/.local-chromium`})
+
 
 
 const urls = [
@@ -19,6 +17,10 @@ const urls = [
 
 const fun = async () => {
   try {  
+
+    const exec = await download({
+        revision: 694644,
+        installPath: `${tmp}/.local-chromium`})
 
     const browser = await puppeteer.launch({
         executablePath: exec,
