@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer-core");
 const chromium = require("chrome-aws-lambda");
 //https://www.vg247.com/genshin-impact-codes
 //https://www.pockettactics.com/genshin-impact/codes
-const app = require('express');
+
 
 const urls = [
   "https://www.pockettactics.com/genshin-impact/codes",
