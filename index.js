@@ -4,10 +4,25 @@ const chromium = require("chrome-aws-lambda");
 //https://www.pockettactics.com/genshin-impact/codes
 
 
+const express = require('express')
+
+
 const urls = [
   "https://www.pockettactics.com/genshin-impact/codes",
   "https://www.vg247.com/genshin-impact-codes",
 ];
+
+const app = express()
+const port = 3000
+
+
+app.get('/', (req, res) => {
+    res.send('Hello, Vercel!')
+  })
+  
+  app.listen(port, () => {
+    console.log(`Express app hosted on Vercel listening at port ${port}`)
+  })
 
 module.exports = async (req, res) => {
   try {
