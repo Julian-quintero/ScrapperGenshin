@@ -1,6 +1,6 @@
 const puppeteer = require("puppeteer-core");
 
-const Chromium = require("chrome-aws-lambda");
+const chromium = require('chrome-aws-lambda');
 
 
 
@@ -11,9 +11,9 @@ const Chromium = require("chrome-aws-lambda");
 
 const options = process.env.AWS_REGION
 ? {
-    args: Chromium.args,
-    executablePath: await Chromium.executablePath,
-    headless: Chromium.headless
+    args: chromium.args,
+    executablePath: await chromium.executablePath,
+    headless: chromium.headless
   }
 : {
     args: [],
