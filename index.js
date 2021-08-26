@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-
+const chromium = require("chrome-aws-lambda")
 //https://www.vg247.com/genshin-impact-codes
 //https://www.pockettactics.com/genshin-impact/codes
 
@@ -12,11 +12,13 @@ const fun = async ()=> {
 
     try {  
 
-        const browser = await puppeteer.launch({     
-            headless: true,     
-           
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-            });
+        const browser = await chromium.puppeteer.launch({
+            args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+            defaultViewport: chromium.defaultViewport,
+            executablePath: await chromium.executablePath,
+            headless: true,
+            ignoreHTTPSErrors: true,
+          })
     
             
             let page = await browser.newPage();
