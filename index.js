@@ -3,6 +3,15 @@ const puppeteer = require("puppeteer");
 //https://www.vg247.com/genshin-impact-codes
 //https://www.pockettactics.com/genshin-impact/codes
 
+const chromePath = process.argv[2];
+
+if(!chromePath) {
+  console.log("Please provide path to Chrome")
+  return
+}
+
+process.env.PUPPETEER_EXECUTABLE_PATH = chromePath;
+
 const urls = [
   "https://www.pockettactics.com/genshin-impact/codes",
   "https://www.vg247.com/genshin-impact-codes",
