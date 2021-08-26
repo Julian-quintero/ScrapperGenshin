@@ -1,9 +1,8 @@
 
 const chromium = require("chrome-aws-lambda");
-//https://www.vg247.com/genshin-impact-codes
-//https://www.pockettactics.com/genshin-impact/codes
 
-const puppeteer = require('puppeteer-core');
+
+
 const express = require('express')
 
 
@@ -50,8 +49,9 @@ const funt = async () => {
 
 
 app.get('/', (req, res) => {
-    funt()
+   
     res.send('Hello, Vercel!')
+    funt()
   })
   
   app.listen(port, () => {
