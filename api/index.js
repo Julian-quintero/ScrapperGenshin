@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
           (x) => x.textContent
         )
       );
-      
+     
       await browser.close();
 
       console.log(elementsHendles);
@@ -38,6 +38,7 @@ module.exports = async (req, res) => {
     console.log("error ", error);
   }
 
+  
   res.writeHead(200, {
     "Content-Type": "text/html",
   })
