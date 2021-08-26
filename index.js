@@ -17,14 +17,13 @@ const port = 3000
 
 const funt = async () => {
     try {
-        const browser = await puppeteer.launch(process.env.AWS_EXECUTION_ENV ? {
-            args: chromium.args,
+        const browser = await chromium.puppeteer.launch({
+            args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+            defaultViewport: chromium.defaultViewport,
             executablePath: await chromium.executablePath,
-            headless: chromium.headless
-          } : {
-            args: [],
-            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-          });
+            headless: true,
+            ignoreHTTPSErrors: true,
+          })
   
       let page = await browser.newPage();
   
