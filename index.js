@@ -1,6 +1,5 @@
-const puppeteer = require("puppeteer-core");
-
 const chrome = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer-core');
 
 
 
@@ -16,41 +15,28 @@ const urls = [
   "https://www.vg247.com/genshin-impact-codes",
 ];
 
-const fun = async () => {
-  try {  
-
-
-
+(async () => {
+    await fs.promises.mkdir('public', { recursive: true });
+    await fs.promises.writeFile('public/index.html', '<img src="/image.png">');
+  
     const browser = await puppeteer.launch(process.env.AWS_EXECUTION_ENV ? {
-        args: chrome.args,
-        executablePath: await chrome.executablePath,
-        headless: chrome.headless
-      } : {
-        args: [],
-        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-      });
-
-    let page = await browser.newPage();
-
-    for (let index = 0; index < urls.length; index++) {
-      await page.goto(urls[index], { waitUntil: "networkidle2" });
-
-      let elementsHendles = await page.evaluate(() =>
-        Array.from(document.querySelectorAll("ul > li > strong")).map(
-          (x) => x.textContent
-        )
-      );
-
-    
-
-      console.log(elementsHendles);
-    }
-
+      args: chrome.args,
+      executablePath: await chrome.executablePath,
+      headless: chrome.headless
+    } : {
+      args: [],
+      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    });
+  
+    const page = await browser.newPage();
+  
+    await page.setViewport({
+      width: 400,
+      height: 400,
+      deviceScaleFactor: 1
+    });
+  
+    await page.setContent('<h1>Hello World!</h1>', { waitUntil: 'networkidle2' });
+    await page.screenshot({ path: 'public/image.png' });
     await browser.close();
-  } catch (error) {
-    console.log("error ", error);
-    await browser.close();
-  }
-};
-
-fun();
+  })();
