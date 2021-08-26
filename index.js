@@ -53,6 +53,7 @@ const funt = async () => {
 
 
 app.get('/', (req, res) => {
+    console.log('caca');
     res.send('Hello, Vercel!')
   })
   
