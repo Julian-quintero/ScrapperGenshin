@@ -6,7 +6,7 @@ const chromium = require("chrome-aws-lambda")
 const urls = ['https://www.pockettactics.com/genshin-impact/codes','https://www.vg247.com/genshin-impact-codes'];
 
 
-const fun = async ()=> {
+export const fun = async ()=> {
 
   
 
