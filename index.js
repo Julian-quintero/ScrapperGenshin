@@ -3,7 +3,7 @@ const chromium = require("chrome-aws-lambda");
 //https://www.vg247.com/genshin-impact-codes
 //https://www.pockettactics.com/genshin-impact/codes
 
-
+const puppeteer = require('puppeteer-core');
 const express = require('express')
 
 
@@ -17,13 +17,14 @@ const port = 3000
 
 const funt = async () => {
     try {
-      const browser = await chromium.puppeteer.launch({
-        args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath,
-        headless: true,
-        ignoreHTTPSErrors: true,
-      });
+        const browser = await puppeteer.launch(process.env.AWS_EXECUTION_ENV ? {
+            args: chromium.args,
+            executablePath: await chromium.executablePath,
+            headless: chromium.headless
+          } : {
+            args: [],
+            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+          });
   
       let page = await browser.newPage();
   
