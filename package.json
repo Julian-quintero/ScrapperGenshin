@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+  "scripts": { 
+    "start": "node index.js",
+    "build": "AWS_LAMBDA_FUNCTION_NAME=true node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chrome-aws-lambda": "^10.1.0",
     "download-chromium": "^2.2.1",
     "puppeteer": "^10.2.0",
-    "puppeteer-core": "^10.2.0"
+    "chrome-aws-lambda": "8.0.2",
+    "puppeteer-core": "8.0.0"
   }
 }

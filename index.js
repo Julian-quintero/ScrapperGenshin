@@ -1,6 +1,7 @@
 const puppeteer = require("puppeteer-core");
 
-const chromium = require('chrome-aws-lambda');
+const chrome = require('chrome-aws-lambda');
+
 
 
 
@@ -8,22 +9,6 @@ const chromium = require('chrome-aws-lambda');
 
 //https://www.vg247.com/genshin-impact-codes
 //https://www.pockettactics.com/genshin-impact/codes
-
-const options = process.env.AWS_REGION
-? {
-    args: chromium.args,
-    executablePath: await chromium.executablePath,
-    headless: chromium.headless
-  }
-: {
-    args: [],
-    executablePath:
-      process.platform === 'win32'
-        ? 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
-        : process.platform === 'linux'
-        ? '/usr/bin/google-chrome'
-        : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-  };
 
 
 const urls = [
@@ -36,10 +21,14 @@ const fun = async () => {
 
 
 
-    const browser = await puppeteer.launch({
-        options
-
-    });
+    const browser = await puppeteer.launch(process.env.AWS_EXECUTION_ENV ? {
+        args: chrome.args,
+        executablePath: await chrome.executablePath,
+        headless: chrome.headless
+      } : {
+        args: [],
+        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+      });
 
     let page = await browser.newPage();
 
