@@ -1,4 +1,4 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 const chromium = require("chrome-aws-lambda");
 //https://www.vg247.com/genshin-impact-codes
 //https://www.pockettactics.com/genshin-impact/codes
@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
   }
 
   res.writeHead(200, {
-    "Content-Type": "image/png",
+    "Content-Type": "text",
     "Content-Length": 5,
   })
   res.end('hola')
