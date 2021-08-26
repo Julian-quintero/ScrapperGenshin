@@ -44,16 +44,13 @@ const funt = async () => {
       console.log("error ", error);
     }
   
-    res.writeHead(200, {
-      "Content-Type": "text/html",
-    })
-    res.end("hello")
+
   
   }
 
 
 app.get('/', (req, res) => {
-    console.log('caca');
+    funt()
     res.send('Hello, Vercel!')
   })
   
