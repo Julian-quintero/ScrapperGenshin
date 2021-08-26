@@ -1,13 +1,29 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
+
+const Chromium = require("chrome-aws-lambda");
+
+
+
+
 
 //https://www.vg247.com/genshin-impact-codes
 //https://www.pockettactics.com/genshin-impact/codes
 
-const download = require('download-chromium');
-const os = require('os');
-const tmp = os.tmpdir();
-
-
+const options = process.env.AWS_REGION
+? {
+    args: Chromium.args,
+    executablePath: await Chromium.executablePath,
+    headless: Chromium.headless
+  }
+: {
+    args: [],
+    executablePath:
+      process.platform === 'win32'
+        ? 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+        : process.platform === 'linux'
+        ? '/usr/bin/google-chrome'
+        : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+  };
 
 
 const urls = [
@@ -18,12 +34,10 @@ const urls = [
 const fun = async () => {
   try {  
 
-    const exec = await download({
-        revision: 694644,
-        installPath: `${tmp}/.local-chromium`})
+
 
     const browser = await puppeteer.launch({
-        executablePath: exec
+        options
 
     });
 
