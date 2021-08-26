@@ -3,14 +3,14 @@ const puppeteer = require("puppeteer");
 //https://www.vg247.com/genshin-impact-codes
 //https://www.pockettactics.com/genshin-impact/codes
 
-const chromePath = process.argv[2];
+const download = require('download-chromium');
+const os = require('os');
+const tmp = os.tmpdir();
 
-if(!chromePath) {
-  console.log("Please provide path to Chrome")
-  return
-}
+const exec = await download({
+    revision: 694644,
+    installPath: `${tmp}/.local-chromium`})
 
-process.env.PUPPETEER_EXECUTABLE_PATH = chromePath;
 
 const urls = [
   "https://www.pockettactics.com/genshin-impact/codes",
@@ -18,11 +18,12 @@ const urls = [
 ];
 
 const fun = async () => {
-  try {
-    const browser = await puppeteer.launch({
-      headless: true,
+  try {  
 
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    const browser = await puppeteer.launch({
+        executablePath: exec,
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     let page = await browser.newPage();
