@@ -1,29 +1,64 @@
+
+
+
+
 const puppeteer = require("puppeteer");
 
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000;
 
-async function main() {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox"]
-  });
-  const tab = await browser.newPage();
-  const text = await (await tab.goto("http://example.com/")).text();
-  console.log(text);
-  console.log("done");
-  browser.close();
-}
+
+
+const urls = [
+  "https://www.pockettactics.com/genshin-impact/codes",
+  "https://www.vg247.com/genshin-impact-codes",
+];
+
+
+const funt = async () => {
+    try {      
+      const browser = await puppeteer.launch({
+        headless: true,
+  
+        args: ["--no-sandbox"],
+      });
+  
+      let page = await browser.newPage();
+  
+      for (let index = 0; index < urls.length; index++) {
+        await page.goto(urls[index], { waitUntil: "networkidle2" });
+  
+        let elementsHendles = await page.evaluate(() =>
+          Array.from(document.querySelectorAll("ul > li > strong")).map(
+            (x) => x.textContent
+          )
+        );
+        
+     
+  
+        console.log(elementsHendles);
+      }
+      await browser.close();
+    } catch (error) {
+      console.log("errorr ", error);
+      await browser.close();
+    }
+  
+
+  
+  }
+
+
+  app.get('/', (req, res) => {
+    res.send('Hello World!')
+    funt();
+  })
+  
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+  })
 
 
 
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-  main();
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
