@@ -18,6 +18,7 @@ const urls = [
 
 
 
+
 const funt = async () => {
   const browser = await puppeteer.launch({
     headless: true,
