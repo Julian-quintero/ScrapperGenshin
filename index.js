@@ -6,7 +6,7 @@
 
 
 
-const puppeteer = require('puppeteer');
+let puppeteer = require('puppeteer');
 
 
 
@@ -15,14 +15,15 @@ const urls = [
   "https://www.vg247.com/genshin-impact-codes",
 ];
 
-const browser = await puppeteer.launch({
-  headless: true,
 
-  args: ["--no-sandbox"],
-});
 
 
 const funt = async () => {
+  const browser = await puppeteer.launch({
+    headless: true,
+  
+    args: ["--no-sandbox"],
+  });
     try {      
      
   
