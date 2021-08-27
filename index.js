@@ -30,8 +30,9 @@ const funt = async () => {
       let page = await browser.newPage();
   
      
-        await page.goto('https://www.pockettactics.com/genshin-impact/codes', { waitUntil: "networkidle2" });
-  
+        await page.goto('https://www.pockettactics.com/genshin-impact/codes');
+
+        await page.waitForSelector("ul > li > strong")
         let elementsHendles = await page.evaluate(() =>
           Array.from(document.querySelectorAll("ul > li > strong")).map(
             (x) => x.textContent
