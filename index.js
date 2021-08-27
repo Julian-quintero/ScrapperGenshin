@@ -22,10 +22,6 @@ const urls = [
   "https://www.vg247.com/genshin-impact-codes",
 ];
 
-const app = express()
-const port = 3000
-
-
 
 const funt = async () => {
     try {      
@@ -60,16 +56,7 @@ const funt = async () => {
   }
 
 
-app.get('/', (req, res) => {
-   
-    res.send('Hello, Vercel!')
-    funt()
-  })
-  
-  app.listen(port, () => {
-    console.log(`Express app hosted on Vercel listening at port ${port}`)
-    funt()
-  })
+  funt()
 
 
 
