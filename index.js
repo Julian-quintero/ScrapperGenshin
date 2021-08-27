@@ -52,7 +52,7 @@ const funt = async () => {
       }
       await browser.close();
     } catch (error) {
-      console.log("error ", error);
+      console.log("errorr ", error);
     }
   
 
