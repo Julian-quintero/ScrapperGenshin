@@ -29,8 +29,8 @@ const funt = async () => {
   
       let page = await browser.newPage();
   
-      for (let index = 0; index < urls.length; index++) {
-        await page.goto(urls[index], { waitUntil: "networkidle2" });
+     
+        await page.goto('https://www.pockettactics.com/genshin-impact/codes', { waitUntil: "networkidle2" });
   
         let elementsHendles = await page.evaluate(() =>
           Array.from(document.querySelectorAll("ul > li > strong")).map(
@@ -41,7 +41,7 @@ const funt = async () => {
      
   
         console.log(elementsHendles);
-      }
+      
       await browser.close();
     } catch (error) {
       console.log("errorr ", error);
