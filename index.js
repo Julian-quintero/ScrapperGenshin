@@ -29,13 +29,10 @@ const port = 3000
 
 const funt = async () => {
     try {      
-
-      let browser = await puppeteer.launch({
-        args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
-        defaultViewport: chrome.defaultViewport,
-        executablePath: await chrome.executablePath,
+      const browser = await puppeteer.launch({
         headless: true,
-        ignoreHTTPSErrors: true,
+  
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
   
       let page = await browser.newPage();
@@ -49,10 +46,11 @@ const funt = async () => {
           )
         );
         
-        await browser.close();
+     
   
         console.log(elementsHendles);
       }
+      await browser.close();
     } catch (error) {
       console.log("error ", error);
     }
