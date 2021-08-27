@@ -1,5 +1,9 @@
 const puppeteer = require("puppeteer");
 
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 3000;
+
 async function main() {
   const browser = await puppeteer.launch({
     headless: true,
@@ -13,4 +17,13 @@ async function main() {
 }
 
 
-main();
+
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+  main();
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
