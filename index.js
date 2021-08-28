@@ -109,13 +109,13 @@ const funt = async () => {
 
 //  })
 
-funt();
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!')
 
-// })
+app.get('/', (req, res) => {
+   res.send('Hello World!')
+   funt();
+ })
 
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`)
-// })
+ app.listen(port, () => {
+   console.log(`Example app listening at http://localhost:${port}`)
+ })
