@@ -14,7 +14,7 @@ let expo = new Expo();
 let messages = [];
 let somePushTokens=['ExponentPushToken[nuoSJPPCIIiKB3gJtt55be]']
 
-function sendMessage(codesFromWeb) {
+async function sendMessage(codesFromWeb) {
 
   let CodesFromdb;
   await db
