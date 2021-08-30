@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-
+const { Expo } = require('expo-server-sdk')
 const express = require("express");
 const { db } = require("./firebase/firebase");
 const app = express();
@@ -9,6 +9,57 @@ const urls = [
   "https://www.pockettactics.com/genshin-impact/codes"
 ];
 
+let expo = new Expo();
+
+let messages = [];
+let somePushTokens=['ExponentPushToken[nuoSJPPCIIiKB3gJtt55be]']
+
+function sendMessage(codesFromWeb) {
+  for (let pushToken of somePushTokens) {
+    // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
+
+    console.log(pushToken);
+  
+    // Check that all your push tokens appear to be valid Expo push tokens
+    if (!Expo.isExpoPushToken(pushToken)) {
+      console.error(`Push token ${pushToken} is not a valid Expo push token`);
+      continue;
+    }
+  
+    // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
+
+    
+    messages.push({
+      to: pushToken,
+      sound: 'default',
+      body: 'NEW GENSHIN IMPACT CODES',
+      priority: 'high'
+    //  data: { withSome: 'data' },
+    })
+  }
+
+  let chunks = expo.chunkPushNotifications(messages);
+let tickets = [];
+(async () => {
+  // Send the chunks to the Expo push notification service. There are
+  // different strategies you could use. A simple one is to send one chunk at a
+  // time, which nicely spreads the load out over time:
+  for (let chunk of chunks) {
+    try {
+      let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+      console.log(ticketChunk);
+      tickets.push(...ticketChunk);
+      // NOTE: If a ticket contains an error code in ticket.details.error, you
+      // must handle it appropriately. The error codes are listed in the Expo
+      // documentation:
+      // https://docs.expo.io/push-notifications/sending-notifications/#individual-errors
+    } catch (error) {
+      console.error(error);
+    }
+  }
+})();
+  
+}
 
 
 
@@ -27,7 +78,7 @@ async function deleteDb (codesFromDb) {
 }
 
 const getCodesFromdb = async (codesFromWeb) => {
-  codesFromWeb=['RAT']
+ // codesFromWeb=['RAT','CAT','BLOP','PUT','SIS','REP']
   
   await db.collection("codes")
     .get()
@@ -42,7 +93,7 @@ const getCodesFromdb = async (codesFromWeb) => {
     console.log('db menor que web');  
     fillDbWithCodes(codesFromWeb)
     console.log('notifi');
-    
+    sendMessage(codesFromWeb)
    
   }else if(CodesFromdb.length > codesFromWeb.length){
     deleteDb(CodesFromdb)    
@@ -58,6 +109,7 @@ const getCodesFromdb = async (codesFromWeb) => {
      console.log('misma longitud pero diferente contenido')
      fillDbWithCodes(codesFromWeb)
      console.log('notifi');
+     sendMessage(codesFromWeb)
 
     }
   
@@ -102,20 +154,20 @@ const funt = async () => {
     await browser.close();
   }
 
-  var random_number = Math.floor(Math.random() * 100000);
+ 
 };
 //    await db.collection("codes").doc(random_number.toString()).set({
 //     codes: "Los Angeles"
 
 //  })
 
+//funt()
 
+ app.get('/', (req, res) => {
+    res.send('Hello World!')
+    funt();
+  })
 
-app.get('/', (req, res) => {
-   res.send('Hello World!')
-   funt();
- })
-
- app.listen(port, () => {
-   console.log(`Example app listening at http://localhost:${port}`)
- })
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+  })
