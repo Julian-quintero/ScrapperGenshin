@@ -27,7 +27,7 @@ async function sendMessage(codesFromWeb) {
   for (let pushToken of CodesFromdb) {
     // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
 
-    console.log(pushToken);
+    console.log('pushToken',pushToken);
   
     // Check that all your push tokens appear to be valid Expo push tokens
     if (!Expo.isExpoPushToken(pushToken)) {
