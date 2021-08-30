@@ -15,7 +15,16 @@ let messages = [];
 let somePushTokens=['ExponentPushToken[nuoSJPPCIIiKB3gJtt55be]']
 
 function sendMessage(codesFromWeb) {
-  for (let pushToken of somePushTokens) {
+
+  let CodesFromdb;
+  await db
+    .collection("expo")
+    .get()
+    .then((doc) => {
+      CodesFromdb = doc.docs.map((x) => x.data().codes);
+    });
+
+  for (let pushToken of CodesFromdb) {
     // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
 
     console.log(pushToken);
