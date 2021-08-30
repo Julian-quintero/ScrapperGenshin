@@ -11,11 +11,11 @@ const urls = [
 
 let expo = new Expo();
 
-let messages = [];
+
 let somePushTokens=['ExponentPushToken[nuoSJPPCIIiKB3gJtt55be]']
 
 async function sendMessage(codesFromWeb) {
-
+  let messages = [];
   let CodesFromdb;
   await db
     .collection("expo")
