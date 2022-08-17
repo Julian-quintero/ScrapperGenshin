@@ -104,7 +104,7 @@ async function deleteDb (codesFromDb) {
 }
 
 const getCodesFromdb = async (codesFromWeb) => {
-  codesFromWeb=['GENSHINGIFT','LANVJSFUD6CM','DTNUKTWCC6D9','HSNUKTXCCPWV']
+
 
  
   console.log('codesFromWeb',codesFromWeb);
@@ -205,9 +205,9 @@ const funt = async () => {
      
       })
 
-      console.log("test",codesArray)
+
       
-      //getCodesFromdb(codesFromWeb);   
+      getCodesFromdb(codesArray);   
 
 
     }
