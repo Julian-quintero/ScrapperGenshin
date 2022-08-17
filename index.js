@@ -103,6 +103,21 @@ async function deleteDb (codesFromDb) {
   
 }
 
+
+function areEqual(array1, array2) {
+  if (array1.length === array2.length) {
+    return array1.every(element => {
+      if (array2.includes(element)) {
+        return true;
+      }
+
+      return false;
+    });
+  }
+
+  return false;
+}
+
 const getCodesFromdb = async (codesFromWeb) => {
 
 
@@ -132,7 +147,7 @@ const getCodesFromdb = async (codesFromWeb) => {
 
   }else if(CodesFromdb.length === codesFromWeb.length){
 
-    if (CodesFromdb.toString() == codesFromWeb.toString()) {
+    if (areEqual(CodesFromdb, codesFromWeb)) {
       console.log('mismos codigos')
     }else{
       deleteDb(CodesFromdb)  
