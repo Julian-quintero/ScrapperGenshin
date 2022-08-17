@@ -136,6 +136,7 @@ const getCodesFromdb = async (codesFromWeb) => {
 
   if (CodesFromdb.length < codesFromWeb.length) {
     console.log('db menor que web');  
+    deleteDb(CodesFromdb)    
     fillDbWithCodes(codesFromWeb)
     console.log('notifi');
     sendMessage(codesFromWeb)
