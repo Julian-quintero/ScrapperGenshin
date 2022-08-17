@@ -4,9 +4,9 @@ const express = require("express");
 const { db } = require("./firebase/firebase");
 const app = express();
 const port = process.env.PORT || 3000;
-
+//https://genshin-impact.fandom.com/wiki/Promotional_Codes
 const urls = [
-  "https://www.pockettactics.com/genshin-impact/codes"
+  "https://genshin-impact.fandom.com/wiki/Promotional_Codes"
 ];
 
 let expo = new Expo();
@@ -73,23 +73,43 @@ let tickets = [];
 
 
 async function fillDbWithCodes (codesFromWeb) {
-  codesFromWeb.forEach(async (element) => {
-    await db.collection("codes").doc(element.toString()).set({
-      codes: element,
+
+  try {
+
+    codesFromWeb.forEach(async (element) => {
+      await db.collection("codes").doc(element.toString()).set({
+        codes: element,
+      });
     });
-  });
+    
+  } catch (error) {
+
+    console.log('error in fillDbWithCodes',error);
+    
+  }
+
 }
 
 async function deleteDb (codesFromDb) {
-  codesFromDb.forEach(async (element) => {
-    await db.collection("codes").doc(element).delete()
-  });
+
+  try {
+    codesFromDb.forEach(async (element) => {
+      await db.collection("codes").doc(element).delete()
+    });
+  } catch (error) {
+    console.log('error in deleteDb',error);
+  }
+  
 }
 
 const getCodesFromdb = async (codesFromWeb) => {
- // codesFromWeb=['RAT','CAT','BLOP','PUT','SIS','REP']
-  
-  await db.collection("codes")
+  codesFromWeb=['GENSHINGIFT','LANVJSFUD6CM','DTNUKTWCC6D9','HSNUKTXCCPWV']
+
+ 
+  console.log('codesFromWeb',codesFromWeb);
+  try {
+
+    await db.collection("codes")
     .get()
     .then((doc) => {
       CodesFromdb = doc.docs.map((x) => x.data().codes);
@@ -125,35 +145,47 @@ const getCodesFromdb = async (codesFromWeb) => {
 
 
   }
+    
+  } catch (error) {
+    console.log('error in getCodesFromdb',error);
+  }
+  
+ 
 };
 
 const funt = async () => {
   let codesFromWeb;
 
+  const browser = await puppeteer.launch({
+    headless: true,
+    //args: ["--no-sandbox"],
+  });
+
+  let page = await browser.newPage();
+
+
   try {
-    const browser = await puppeteer.launch({
-      headless: true,
+    
 
-      args: ["--no-sandbox"],
-    });
-
-    let page = await browser.newPage();
 
     for (let index = 0; index < urls.length; index++) {
-      await page.goto(urls[index]);
-      await page.waitForSelector("ul > li > strong");
+      await page.goto(urls[index],{
+        waitUntil: 'networkidle2',
+      });
+      await page.waitForSelector("tr");
       let elementsHendles = await page.evaluate(() =>
-        Array.from(document.querySelectorAll("ul > li > strong")).map((x) => {
-          return (
-            x.textContent === x.textContent.toUpperCase() &&
-            x.textContent.length > 1 &&
-            x.textContent
-          );
+        Array.from(document.querySelectorAll("tr")).map((x) => {
+          console.log(x)
+          // return (
+          //   x.textContent[0] === x.textContent[0].toUpperCase() &&
+          //   x.textContent.length > 1 &&
+          //   x.textContent
+          // );
         })
       );
       codesFromWeb = elementsHendles.filter((e) => e);
-      console.log(codesFromWeb);
-      getCodesFromdb(codesFromWeb);
+      console.log('codesFromWeb1',codesFromWeb);
+      //getCodesFromdb(codesFromWeb);
       // console.log(elementsHendles);
       //console.log(clean);
     }
