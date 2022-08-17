@@ -1,4 +1,4 @@
-const firebase = require("firebase/app")
+const {initializeApp } = require("firebase/app")
 require("firebase/firestore")
 
 
@@ -17,7 +17,7 @@ const firebaseConfig = {
   appId: "1:484995004222:web:55e230e088bd78acfd5e6f",
   measurementId: "G-CVL0VT5Z0X"
 };
-  const fb = firebase.initializeApp(firebaseConfig);
+  const fb = initializeApp(firebaseConfig);
  
 
  const db = fb.firestore(); // objeto db
