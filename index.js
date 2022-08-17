@@ -205,7 +205,7 @@ const funt = async () => {
      
       })
 
-      console.log(codesArray)
+      console.log("test",codesArray)
       
       //getCodesFromdb(codesFromWeb);   
 
