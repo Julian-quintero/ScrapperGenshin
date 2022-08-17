@@ -2,6 +2,7 @@ const puppeteer = require("puppeteer");
 const { Expo } = require('expo-server-sdk')
 const express = require("express");
 const { db } = require("./firebase/firebase");
+const {tableParser} = require("puppeteer-table-parser")
 const app = express();
 const port = process.env.PORT || 3000;
 //https://genshin-impact.fandom.com/wiki/Promotional_Codes
@@ -172,22 +173,43 @@ const funt = async () => {
       await page.goto(urls[index],{
         waitUntil: 'networkidle2',
       });
-      await page.waitForSelector("tr");
-      let elementsHendles = await page.evaluate(() =>
-        Array.from(document.querySelectorAll("tr")).map((x) => {
-          console.log(x)
-          // return (
-          //   x.textContent[0] === x.textContent[0].toUpperCase() &&
-          //   x.textContent.length > 1 &&
-          //   x.textContent
-          // );
-        })
-      );
-      codesFromWeb = elementsHendles.filter((e) => e);
-      console.log('codesFromWeb1',codesFromWeb);
-      //getCodesFromdb(codesFromWeb);
-      // console.log(elementsHendles);
-      //console.log(clean);
+      const result = await tableParser(page, {
+        selector: 'table',
+        colParser: (value) => {
+          return value.trim();
+        },
+        allowedColNames: {
+          'Code': 'code',   
+          'Duration' :'duration'
+        },
+        rowValidator: (row, getColumnIndex) => {
+         
+          if (row[1].includes('Expired')) {            
+          }else{
+            return row
+          }      
+        },
+        asArray:true
+        
+      });
+
+      let codesArray = []
+
+      result.forEach((code,index)=>{
+        if (index !== 0) {
+          let cleanResult = code.split(";")[0]
+          codesArray.push(cleanResult)
+  
+          
+        }
+     
+      })
+
+      console.log(codesArray)
+      
+      //getCodesFromdb(codesFromWeb);   
+
+
     }
     await browser.close();
   } catch (error) {
@@ -197,12 +219,6 @@ const funt = async () => {
 
  
 };
-//    await db.collection("codes").doc(random_number.toString()).set({
-//     codes: "Los Angeles"
-
-//  })
-
-//funt()
 
  app.get('/', (req, res) => {
     res.send('Hello World!')
