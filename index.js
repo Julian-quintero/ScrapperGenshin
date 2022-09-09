@@ -186,9 +186,12 @@ const funt = async () => {
 
 
     for (let index = 0; index < urls.length; index++) {
-      await page.goto(urls[index],{
+      let status = await page.goto(urls[index],{
         waitUntil: 'networkidle2',
       });
+      status = status.status();
+      console.log('status: ' + status)
+     
       const result = await tableParser(page, {
         selector: 'table',
         colParser: (value) => {
