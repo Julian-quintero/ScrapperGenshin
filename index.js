@@ -180,6 +180,8 @@ const funt = async () => {
 
   let page = await browser.newPage();
 
+  await page.setDefaultNavigationTimeout(0);
+
 
   try {
     
