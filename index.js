@@ -4,7 +4,7 @@ const express = require("express");
 const { db } = require("./firebase/firebase");
 const {tableParser} = require("puppeteer-table-parser")
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 //https://genshin-impact.fandom.com/wiki/Promotional_Codes
 const urls = [
   "https://genshin-impact.fandom.com/wiki/Promotional_Codes"
@@ -18,6 +18,7 @@ let somePushTokens=['ExponentPushToken[nuoSJPPCIIiKB3gJtt55be]']
 async function sendMessage(codesFromWeb) {
   let messages = [];
   let CodesFromdb;
+  //let CodesFromdb = ["ExponentPushToken[ssQHGSPskTYprNdjT81oqg]"];
   await db
     .collection("expo")
     .get()
@@ -25,12 +26,12 @@ async function sendMessage(codesFromWeb) {
       CodesFromdb = doc.docs.map((x) => x.data().codes);
     });
 
+    
+
   for (let pushToken of CodesFromdb) {
     // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
-
-    console.log('pushToken',pushToken);
+   // console.log('pushToken',pushToken); 
   
-    // Check that all your push tokens appear to be valid Expo push tokens
     if (!Expo.isExpoPushToken(pushToken)) {
       console.error(`Push token ${pushToken} is not a valid Expo push token`);
       continue;
@@ -57,7 +58,7 @@ let tickets = [];
   for (let chunk of chunks) {
     try {
       let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
-      console.log(ticketChunk);
+      //console.log(ticketChunk);
       tickets.push(...ticketChunk);
       // NOTE: If a ticket contains an error code in ticket.details.error, you
       // must handle it appropriately. The error codes are listed in the Expo
@@ -70,8 +71,6 @@ let tickets = [];
 })();
   
 }
-
-
 
 async function fillDbWithCodes (codesFromWeb) {
 
@@ -118,11 +117,13 @@ function areEqual(array1, array2) {
   return false;
 }
 
+//TODO: quitar el code quemado
+
 const getCodesFromdb = async (codesFromWeb) => {
 
 
- 
-  console.log('codesFromWeb',codesFromWeb);
+  let CodesFromdb
+  
   try {
 
     await db.collection("codes")
@@ -131,7 +132,8 @@ const getCodesFromdb = async (codesFromWeb) => {
       CodesFromdb = doc.docs.map((x) => x.data().codes);
     });
    
-   console.log('codes from db',CodesFromdb);
+
+   //sendMessage(codesFromWeb)
 
 
   if (CodesFromdb.length < codesFromWeb.length) {
@@ -150,6 +152,7 @@ const getCodesFromdb = async (codesFromWeb) => {
 
     if (areEqual(CodesFromdb, codesFromWeb)) {
       console.log('mismos codigos')
+      //sendMessage(codesFromWeb)
     }else{
       deleteDb(CodesFromdb)  
      console.log('misma longitud pero diferente contenido')
@@ -169,6 +172,7 @@ const getCodesFromdb = async (codesFromWeb) => {
   
  
 };
+
 
 const funt = async () => {
   let codesFromWeb;
